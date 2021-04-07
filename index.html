@@ -10,6 +10,20 @@
         <script defer="defer" type="text/javascript" src="./js/index.js"></script>
     </head>
     <body>
-        <canvas id="myCanvas" width="800" height="600"></canvas>
+        <div class="score">
+            <div class="container">
+                <div class="score__inner">
+                    <div class="current-score">Current score: <span class="current-score__digit">0</span></div>
+                    <div class="best-score">Best score: <span class="best-score__digit">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="myCanvas"></canvas>
+
+        <div class="menu">
+            <button class="start-btn btn">Start</button>
+            <button class="exit-btn btn">Exit</button>
+        </div>
     </body>
 </html>

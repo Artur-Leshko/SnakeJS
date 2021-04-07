@@ -1,10 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000;
+}
+
+.btn {
+    margin: 0 auto;
+    padding: 20px 10px;
+
+    outline: 0;
+    cursor: pointer;
+
+    color: white;
+    font-size: 32px;
+    font-weight: 500;
+
+    background-color: transparent;
+    border: 0;
+    border-radius: 5px;
+
+    transition: linear 0.3s;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 #myCanvas {
     display: block;
-    background: #eee;
+    background: #000;
+}
+
+/*SCORE*/
+
+.score {
+    border-bottom: 2px solid white;
+    padding: 20px 0;
+}
+
+.score__inner {
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 20%;
+    margin: 0 auto;
+}
+
+/*MENU*/
+
+.menu {
+    display: flex;
+    flex-direction: column;
+
+    width: 20%;
+    padding: 30px 0;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background-color: #22f2c9;
+    border-radius: 10px;
+}
+
+.start-btn {
+    margin-bottom: 20px;
+}
+
+.start-btn:hover {
+    color: #236be8;
+}
+
+.exit-btn:hover {
+    color: #f53131;
 }
