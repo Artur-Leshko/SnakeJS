@@ -101,3 +101,25 @@ body {
 .exit-btn:hover {
     color: #f53131;
 }
+
+/*GAME OVER*/
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+
+    color: #f53131;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.game-over__score {
+    margin: 20px 0;
+}
