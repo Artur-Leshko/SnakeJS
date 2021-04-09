@@ -14,7 +14,7 @@ const
     appleColor = '#e31033';
 
 let
-    fps = 1000/50, // fps
+    fps = 1000/40, // fps
     gameStarted = false, // did game start?
     firstLoop = true, // is it first drawing loop?
     score = bestScore = 0,  // score and best score in game
@@ -105,6 +105,25 @@ function loop() {
             localStorage.setItem('bestSnakeScore', score);
 
         clearInterval(timerId);
+    }
+
+    //collision with itself tail
+
+    for(let i = 1; i < tail.length; i++) {
+        if(snakePosition.x < tail[i].x + size &&
+            snakePosition.x + size > tail[i].x &&
+            snakePosition.y < tail[i].y + size &&
+            snakePosition.y + size > tail[i].y) {
+
+            gameOver.style.display = 'flex';
+            gameOverScore.textContent = score;
+
+            if(score >= bestScore)
+                localStorage.setItem('bestSnakeScore', score);
+
+            clearInterval(timerId);
+            break;
+        }
     }
 }
 
