@@ -6,13 +6,17 @@ const
     menu = document.querySelector('.menu'),
     scoreEl = document.querySelector('.current-score__digit'),
     bestScoreEl = document.querySelector('.best-score__digit'),
+    gameOver = document.querySelector('.game-over'),
+    gameOverScore = document.querySelector('.game-over__digit'),
     canvas = document.querySelector('#myCanvas'),
     ctx = canvas.getContext("2d"),
     snakeColor = '#12e03b',
     appleColor = '#e31033';
 
 let
-    fps = 1000/60, // fps
+    fps = 1000/50, // fps
+    gameStarted = false, // did game start?
+    firstLoop = true, // is it first drawing loop?
     score = bestScore = 0,  // score and best score in game
     timerId,  // timer id of main loop
     tail = [], // array of tail
@@ -33,12 +37,6 @@ bestScore = localStorage.getItem('bestSnakeScore') || 0;
 bestScoreEl.textContent = bestScore;
 
 
-// fill start tail of the snake
-
-for(let i = 0; i < tailSize; i++) {
-    tail.push({ x: snakePosition.x - size * i, y: snakePosition.y});
-}
-
 
 //main game loop
 
@@ -46,6 +44,14 @@ function loop() {
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // fill start tail of the snake
+    if(firstLoop) {
+        for(let i = 0; i < tailSize; i++) {
+            tail.push({ x: snakePosition.x - size * i, y: snakePosition.y});
+        }
+        firstLoop = false;
+    }
 
     //drawing tail of the snake
 
@@ -84,20 +90,59 @@ function loop() {
     } else {
         tail.pop();
     }
+
+    //collision with the wall
+
+    if(snakePosition.x >= canvas.width ||
+        snakePosition.x + size <= 0 ||
+        snakePosition.y >= canvas.height ||
+        snakePosition.y + size <= 0) {
+
+        gameOver.style.display = 'flex';
+        gameOverScore.textContent = score;
+
+        if(score >= bestScore)
+            localStorage.setItem('bestSnakeScore', score);
+
+        clearInterval(timerId);
+    }
 }
 
 //change direction of the snake
 
 function changeDirection(e) {
-    console.log(e.keyCode);
-    if(e.keyCode == 65) {
+
+    if(e.keyCode == 65 && direction != 'right') {
         direction = 'left';
-    } else if(e.keyCode == 87) {
+    } else if(e.keyCode == 87 && direction != 'bot') {
         direction = 'top';
-    } else if(e.keyCode == 68) {
+    } else if(e.keyCode == 68 && direction != 'left') {
         direction = 'right';
-    } else if(e.keyCode == 83) {
+    } else if(e.keyCode == 83 && direction != 'top') {
         direction = 'bot';
+    }
+
+    if(e.keyCode == 82 && gameStarted) {
+        clearInterval(timerId);
+
+        if(score >= bestScore)
+            localStorage.setItem('bestSnakeScore', score);
+
+        firstLoop = true;
+        score = 0;
+        snakePosition = {
+            x:  Math.floor(canvas.width / 2),
+            y:  Math.floor(canvas.height / 2)
+        },
+        tail = [];
+        applePosition = {};
+        direction = 'right';
+
+        gameOver.style.display = 'none';
+        scoreEl.textContent = 0;
+
+        timerId = setInterval(loop, fps);
+        spawnApple();
     }
 }
 
@@ -108,16 +153,19 @@ function spawnApple() {
     applePosition.y = Math.floor(Math.random() * canvas.height + 1);
 }
 
-
+//add event on start button
 
 startBtn.addEventListener('click', (e) => {
     menu.style.display = 'none';
 
     window.addEventListener('keydown', changeDirection);
 
+    gameStarted = true;
     timerId = setInterval(loop, fps);
     spawnApple();
 });
+
+//add event on exit button
 
 exitBtn.addEventListener('click', (e) => {
     window.close();
